@@ -71,7 +71,6 @@ class ReservaAmbienteProfessorList(ListAPIView):
 class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
 
-#FAZER UM FILTRO para listar todas as salas do professor em determinadas matérias, exemplo: professor authenticado: julia, ela especifica a matéria e irá aparecer todas as salas que ela tem reservada naquela matéria
 class SalaList(ListAPIView):
     queryset = Sala.objects.all()
     serializer_class = ReservaSalaSerializer
@@ -82,6 +81,12 @@ class SalaListCreate(ListCreateAPIView):
     queryset = Sala.objects.all()
     serializer_class = ReservaSalaSerializer
     permission_classes = [IsGestor]
+
+def perform_create(self, serializer):
+    if serializer.validated_data['equipe'] != 'DS16' and serializer.validated_data['classificacao'] <= 5:
+        raise serializers.ValidationError('Somente a DS16 fiicar entre os 5')
+    serializer.save()
+
 
 #ADMIN
 #username: admin
