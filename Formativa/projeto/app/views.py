@@ -14,7 +14,7 @@ class UsuarioListCreate(ListCreateAPIView): #Listar e criar
 class UsuarioRestrieveUpdateDestroy(RetrieveDestroyAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
-    pagination_class = [IsGestor]
+    permission_classes = [IsGestor]
     lookup_field = 'pk'
 
 class DisciplinaListCreate(ListCreateAPIView):
@@ -22,9 +22,12 @@ class DisciplinaListCreate(ListCreateAPIView):
     serializer_class = DisciplinaSerializer
 
     def get_permissions(self):
-        if self.request.method == 'GET':
-            return [IsAuthenticated()]
         return [IsGestor()]
+
+    # def get_permissions(self):
+    #     if self.request.method == 'GET':
+    #         return [IsAuthenticated()]
+    #     return [IsGestor()]
     
 class DisciplinaRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     queryset = Disciplina.objects.all()
@@ -58,7 +61,7 @@ class ReservaAmbienteListCreate(ListCreateAPIView):
 class ReservaAmbienteRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     queryset = ReservaAmbiente.objects.all()
     serializer_class = ReservaAmbienteSerializer
-    permission_classes = [IsDonoOuGestor]
+    permission_classes = [IsGestor]
     lookup_field = 'pk'
 
 class ReservaAmbienteProfessorList(ListAPIView):
@@ -81,11 +84,6 @@ class SalaListCreate(ListCreateAPIView):
     queryset = Sala.objects.all()
     serializer_class = ReservaSalaSerializer
     permission_classes = [IsGestor]
-
-def perform_create(self, serializer):
-    if serializer.validated_data['equipe'] != 'DS16' and serializer.validated_data['classificacao'] <= 5:
-        raise serializers.ValidationError('Somente a DS16 fiicar entre os 5')
-    serializer.save()
 
 
 #ADMIN
