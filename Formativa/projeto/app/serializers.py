@@ -17,6 +17,25 @@ class ReservaAmbienteSerializer(serializers.ModelSerializer):
         model = ReservaAmbiente
         fields = '__all__'
 
+    def validate(self,data):
+        data_inicio = data['data_inicio']
+        data_termino = data['data_termino']
+        periodo = data['periodo']
+        sala =  data['sala_reservada']
+
+        tratativa = ReservaAmbiente.objects.filter(
+            sala_reservada=sala,
+            periodo=periodo,
+            data_inicio__lte=data_termino,
+            data_termino__gte=data_inicio
+        )
+        if self.instance:
+            tratativa = tratativa.exclude(pk=self.instance.pk)
+
+        if tratativa.exists():
+            raise serializers.ValidationError("Já existe uma reserva nessa sala neste dia e período.")
+        return data
+
 class LoginSerializer(TokenObtainPairSerializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
@@ -38,5 +57,5 @@ class ReservaSalaSerializer(serializers.ModelSerializer):
 
     def validate_nome(self, value):
         if Sala.objects.filter(nome__iexact=value).exists():
-            raise serializers.ValidationError("Já existe uma sala com esse nome!")
+            raise serializers.ValidationError("Já existe uma sala com esse nome!") #Tratação para não criar duas salas com o mesmo nome
         return value

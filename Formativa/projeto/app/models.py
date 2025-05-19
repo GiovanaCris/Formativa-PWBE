@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-class Usuario(AbstractUser):
+class Usuario(AbstractUser): #Usuário pode ser o Gestor ou professor e ambos tem os mesmos campos de preenchimento
     TIPO_CHOICES = [
         ('G', 'Gestor'),
         ('P', 'Professor'),
@@ -53,4 +53,3 @@ class ReservaAmbiente(models.Model):
 
     def __str__(self):
         return f'{self.sala_reservada} - {self.get_periodo_display()} ({self.data_inicio} a {self.data_termino})'
-    

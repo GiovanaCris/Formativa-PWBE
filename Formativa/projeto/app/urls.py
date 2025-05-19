@@ -7,7 +7,7 @@ urlpatterns = [
 
     #Usuario
     path('usuario/', UsuarioListCreate.as_view()), #Criar e listar todos os usuários
-    path('usuario/<int:pk>/', UsuarioRestrieveUpdateDestroy.as_view()), #Listar informações de um usuário em específico
+    path('usuario/<int:pk>/', UsuarioRestrieveUpdateDestroy.as_view()), #Listar, atualizar e deletar as informações de um usuário em específico
 
     #Disciplina
     path('disciplinas/', DisciplinaListCreate.as_view()),
@@ -15,7 +15,7 @@ urlpatterns = [
     path('professor/disciplinas/', DisciplinaProfessorList.as_view()),
 
     #Sala
-    path('salalistcreate/', SalaListCreate.as_view()),
+    path('salalistcreate/', SalaListCreate.as_view()), #Gestor vai listar e criar a sala
     path('salalist/', SalaList.as_view()),
 
     #Reserva

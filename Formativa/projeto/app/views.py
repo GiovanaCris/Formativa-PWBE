@@ -11,7 +11,7 @@ class UsuarioListCreate(ListCreateAPIView): #Listar e criar
     serializer_class = UsuarioSerializer
     permission_classes = [IsGestor]
 
-class UsuarioRestrieveUpdateDestroy(RetrieveDestroyAPIView):
+class UsuarioRestrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
     permission_classes = [IsGestor]
@@ -23,11 +23,6 @@ class DisciplinaListCreate(ListCreateAPIView):
 
     def get_permissions(self):
         return [IsGestor()]
-
-    # def get_permissions(self):
-    #     if self.request.method == 'GET':
-    #         return [IsAuthenticated()]
-    #     return [IsGestor()]
     
 class DisciplinaRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     queryset = Disciplina.objects.all()
