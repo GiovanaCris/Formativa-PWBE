@@ -6,6 +6,17 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = '__all__'
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
+
+        #Criptografar a senha no banco de dados
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = Usuario(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
 
 class DisciplinaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,24 +28,23 @@ class ReservaAmbienteSerializer(serializers.ModelSerializer):
         model = ReservaAmbiente
         fields = '__all__'
 
-    def validate(self,data):
-        data_inicio = data['data_inicio']
-        data_termino = data['data_termino']
-        periodo = data['periodo']
-        sala =  data['sala_reservada']
+    #Tratação para não criar duas reservas ao mesmo tempo
+    # def validate(self,data):
+    #     data_inicio = data['data_inicio']
+    #     data_termino = data['data_termino']
+    #     sala =  data['sala_reservada']
 
-        tratativa = ReservaAmbiente.objects.filter(
-            sala_reservada=sala,
-            periodo=periodo,
-            data_inicio__lte=data_termino,
-            data_termino__gte=data_inicio
-        )
-        if self.instance:
-            tratativa = tratativa.exclude(pk=self.instance.pk)
+    #     tratativa = ReservaAmbiente.objects.filter(
+    #         sala_reservada=sala,
+    #         data_inicio__lte=data_termino,
+    #         data_termino__gte=data_inicio
+    #     )
+    #     if self.instance:
+    #         tratativa = tratativa.exclude(pk=self.instance.pk)
 
-        if tratativa.exists():
-            raise serializers.ValidationError("Já existe uma reserva nessa sala neste dia e período.")
-        return data
+    #     if tratativa.exists():
+    #         raise serializers.ValidationError("Já existe uma reserva nessa sala neste dia e período.")
+    #     return data
 
 class LoginSerializer(TokenObtainPairSerializer):
     username = serializers.CharField()

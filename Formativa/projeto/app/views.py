@@ -3,6 +3,9 @@ from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView, R
 from .models import Usuario, Disciplina, ReservaAmbiente, Sala
 from .serializers import UsuarioSerializer, DisciplinaSerializer, ReservaAmbienteSerializer, LoginSerializer, ReservaSalaSerializer
 from .permissions import IsGestor, IsProfessor, IsDonoOuGestor
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -17,6 +20,15 @@ class UsuarioRestrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsGestor]
     lookup_field = 'pk'
 
+    #Mensagem ao deletar um usuário
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": f"Professor (a) {instance.username} deletado com suceso!"},
+            status=status.HTTP_200_OK
+        )
+
 class DisciplinaListCreate(ListCreateAPIView):
     queryset = Disciplina.objects.all()
     serializer_class = DisciplinaSerializer
@@ -29,6 +41,14 @@ class DisciplinaRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     serializer_class = DisciplinaSerializer
     permission_classes = [IsGestor]
     lookup_field = 'pk'
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": f"Disciplina {instance.nome} deletada com suceso!"},
+            status=status.HTTP_200_OK
+        )
 
 class DisciplinaProfessorList(ListAPIView):
     serializer_class = DisciplinaSerializer
@@ -46,18 +66,48 @@ class ReservaAmbienteListCreate(ListCreateAPIView):
             return [IsAuthenticated()]
         return [IsGestor()]
     
-    def get_queryset(self): #Ver reservar do professor de um ID específico, adiciona um filtro no queryset pai
+    def get_queryset(self): #Ver reserva do professor de um ID específico, adiciona um filtro no queryset pai
         queryset = super().get_queryset()
         professor_id = self.request.query_params.get('professor', None)
         if professor_id:
             queryset = queryset.filter(professor_id=professor_id)
         return queryset
     
+
+    #ARRUUUMAAAAAAARRRR
+    def perform_create(self, serializer):
+        data_inicio = serializer.validated_data['data_inicio']
+        data_termino = serializer.validated_data['data_termino']
+        periodo = serializer.validated_data['periodo']
+        sala = serializer.validated_data['sala_reservada']  
+
+        tratativa = ReservaAmbiente.objects.filter(
+            sala_reservada=sala,
+            periodo=periodo,
+            data_inicio__lte=data_termino,
+            data_termino__gte=data_inicio
+        )
+
+        if tratativa.exists():
+            raise ValidationError("Já existe uma reserva nessa sala neste dia e período.")
+        serializer.save(professor=self.request.user)
+
+
+
+
 class ReservaAmbienteRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     queryset = ReservaAmbiente.objects.all()
     serializer_class = ReservaAmbienteSerializer
     permission_classes = [IsGestor]
     lookup_field = 'pk'
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": f"Reserva {instance.sala_reservada} deletada com suceso!"},
+            status=status.HTTP_200_OK
+        )
 
 class ReservaAmbienteProfessorList(ListAPIView):
     serializer_class = ReservaAmbienteSerializer

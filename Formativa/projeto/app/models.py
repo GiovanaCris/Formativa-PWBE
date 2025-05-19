@@ -43,7 +43,7 @@ class ReservaAmbiente(models.Model):
         ('N', 'Noite'),
     ]
 
-    data_inicio = models.DateField()
+    data_inicio = models.DateTimeField()
     data_termino = models.DateTimeField()
     periodo = models.CharField(max_length=1, choices=PERIODO_CHOICES, default='M')
     sala_reservada = models.ForeignKey(Sala, on_delete=models.CASCADE)

@@ -3,23 +3,24 @@ from .views import LoginView, UsuarioListCreate, UsuarioRestrieveUpdateDestroy, 
 
 urlpatterns = [
     #Login
-    path('login/', LoginView.as_view()),
+    path('login/', LoginView.as_view()), #Feito Postman
 
     #Usuario
-    path('usuario/', UsuarioListCreate.as_view()), #Criar e listar todos os usuários
-    path('usuario/<int:pk>/', UsuarioRestrieveUpdateDestroy.as_view()), #Listar, atualizar e deletar as informações de um usuário em específico
+    path('usuario/', UsuarioListCreate.as_view()), #Criar e listar todos os usuários #Feito postman
+    path('usuario/<int:pk>/', UsuarioRestrieveUpdateDestroy.as_view()), #atualizar e deletar as informações de um usuário em específico #Feito Postman
 
     #Disciplina
-    path('disciplinas/', DisciplinaListCreate.as_view()),
-    path('disciplinas/<int:pk>', DisciplinaRetrieveUpdateDestroy.as_view()),
-    path('professor/disciplinas/', DisciplinaProfessorList.as_view()),
+    path('disciplinas/', DisciplinaListCreate.as_view()), #Feito Postan
+    path('disciplinas/<int:pk>', DisciplinaRetrieveUpdateDestroy.as_view()), #Feito Postman
+    path('professor/disciplinas/', DisciplinaProfessorList.as_view()), #Feito Postman
 
     #Sala
-    path('salalistcreate/', SalaListCreate.as_view()), #Gestor vai listar e criar a sala
-    path('salalist/', SalaList.as_view()),
+    path('salalistcreate/', SalaListCreate.as_view()), #Gestor vai listar e criar a sala #Feito postman
+    #FAZER O PUT E DELETEEE
+    path('salalist/', SalaList.as_view()), #Listar as salas para o professor
 
     #Reserva
-    path('reservas/', ReservaAmbienteListCreate.as_view()), #Criar e listar as reservas
-    path('reservas/<int:pk>/', ReservaAmbienteRetrieveUpdateDestroy.as_view()), #Listar as informações de uma reserva em específico
-    path('professor/reservas/', ReservaAmbienteProfessorList.as_view()), 
+    path('reservas/', ReservaAmbienteListCreate.as_view()), #Criar e listar as reservas #Feito postman 
+    path('reservas/<int:pk>/', ReservaAmbienteRetrieveUpdateDestroy.as_view()), #atualizar e deletar as informações de uma reserva em específico #Feito Postman
+    path('professor/reservas/', ReservaAmbienteProfessorList.as_view()), #Feito Postman
 ]
