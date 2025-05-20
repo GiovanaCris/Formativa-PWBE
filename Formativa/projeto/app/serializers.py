@@ -31,7 +31,8 @@ class ReservaAmbienteSerializer(serializers.ModelSerializer):
 class LoginSerializer(TokenObtainPairSerializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
-
+    
+# Valida o login usando o serializer padrão do Simple JWT,
     def validate(self, attrs):
         data = super().validate(attrs)
 
