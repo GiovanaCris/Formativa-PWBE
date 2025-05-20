@@ -73,27 +73,27 @@ class ReservaAmbienteListCreate(ListCreateAPIView):
             queryset = queryset.filter(professor_id=professor_id)
         return queryset
     
-
-    #ARRUUUMAAAAAAARRRR
+    #Tratação para não criar reserva no mesmo período
     def perform_create(self, serializer):
         data_inicio = serializer.validated_data['data_inicio']
         data_termino = serializer.validated_data['data_termino']
         periodo = serializer.validated_data['periodo']
-        sala = serializer.validated_data['sala_reservada']  
+        sala = serializer.validated_data['sala_reservada']
+
+        if data_inicio > data_termino:
+            raise ValidationError("A data de início não pode ser posterior à data de término.")
 
         tratativa = ReservaAmbiente.objects.filter(
-            sala_reservada=sala,
-            periodo=periodo,
-            data_inicio__lte=data_termino,
-            data_termino__gte=data_inicio
+        sala_reservada=sala,
+        periodo=periodo,
+        data_inicio__lte=data_termino,
+        data_termino__gte=data_inicio
         )
 
         if tratativa.exists():
-            raise ValidationError("Já existe uma reserva nessa sala neste dia e período.")
+            raise ValidationError("Já essiste uma reserva nesta sala neste mesmo dia e período!")
+        
         serializer.save(professor=self.request.user)
-
-
-
 
 class ReservaAmbienteRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     queryset = ReservaAmbiente.objects.all()
@@ -124,12 +124,24 @@ class SalaList(ListAPIView):
     serializer_class = ReservaSalaSerializer
     permission_classes = [IsProfessor]
 
-#FAZER UMA TRATAÇÃO para o gestor não poder criar duas salas com o msm nome
 class SalaListCreate(ListCreateAPIView):
     queryset = Sala.objects.all()
     serializer_class = ReservaSalaSerializer
     permission_classes = [IsGestor]
 
+class SalaretrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
+    queryset = Sala.objects.all()
+    serializer_class = ReservaSalaSerializer
+    permission_classes = [IsGestor]
+    lookup_field = 'pk'
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": f"Reserva {instance.nome} deletada com suceso!"},
+            status=status.HTTP_200_OK
+        )
 
 #ADMIN
 #username: admin

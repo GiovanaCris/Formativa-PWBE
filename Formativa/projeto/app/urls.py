@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginView, UsuarioListCreate, UsuarioRestrieveUpdateDestroy, ReservaAmbienteListCreate, ReservaAmbienteRetrieveUpdateDestroy, ReservaAmbienteProfessorList, DisciplinaListCreate, DisciplinaRetrieveUpdateDestroy, DisciplinaProfessorList, SalaList, SalaListCreate
+from .views import LoginView, UsuarioListCreate, UsuarioRestrieveUpdateDestroy, ReservaAmbienteListCreate, ReservaAmbienteRetrieveUpdateDestroy, ReservaAmbienteProfessorList, DisciplinaListCreate, DisciplinaRetrieveUpdateDestroy, DisciplinaProfessorList, SalaList, SalaListCreate, SalaretrieveUpdateDestroy
 
 urlpatterns = [
     #Login
@@ -16,7 +16,7 @@ urlpatterns = [
 
     #Sala
     path('salalistcreate/', SalaListCreate.as_view()), #Gestor vai listar e criar a sala #Feito postman
-    #FAZER O PUT E DELETEEE
+    path('sala/<int:pk>', SalaretrieveUpdateDestroy.as_view()), #Feito postman
     path('salalist/', SalaList.as_view()), #Listar as salas para o professor
 
     #Reserva

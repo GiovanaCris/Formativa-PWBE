@@ -10,7 +10,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
-        #Criptografar a senha no banco de dados
+    #Criptografar a senha no banco de dados
     def create(self, validated_data):
         password = validated_data.pop('password')
         user = Usuario(**validated_data)
@@ -27,24 +27,6 @@ class ReservaAmbienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReservaAmbiente
         fields = '__all__'
-
-    #Tratação para não criar duas reservas ao mesmo tempo
-    # def validate(self,data):
-    #     data_inicio = data['data_inicio']
-    #     data_termino = data['data_termino']
-    #     sala =  data['sala_reservada']
-
-    #     tratativa = ReservaAmbiente.objects.filter(
-    #         sala_reservada=sala,
-    #         data_inicio__lte=data_termino,
-    #         data_termino__gte=data_inicio
-    #     )
-    #     if self.instance:
-    #         tratativa = tratativa.exclude(pk=self.instance.pk)
-
-    #     if tratativa.exists():
-    #         raise serializers.ValidationError("Já existe uma reserva nessa sala neste dia e período.")
-    #     return data
 
 class LoginSerializer(TokenObtainPairSerializer):
     username = serializers.CharField()
@@ -65,7 +47,8 @@ class ReservaSalaSerializer(serializers.ModelSerializer):
         model = Sala
         fields = '__all__'
 
+    #Validação do nome para não criar salas com o mesmo nome
     def validate_nome(self, value):
         if Sala.objects.filter(nome__iexact=value).exists():
-            raise serializers.ValidationError("Já existe uma sala com esse nome!") #Tratação para não criar duas salas com o mesmo nome
+            raise serializers.ValidationError("Já existe uma sala com esse nome!") 
         return value
