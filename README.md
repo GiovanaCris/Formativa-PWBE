@@ -1,8 +1,8 @@
 # Projeto Formativo PWBE 
 
-Projeto é uma API desenvolvida para meu projeto Formativo Backend no SENAI "Roberto Mange";
-Sua finalidade é realizar o gerenciamento de um sistema escolarç;
-Foi desenvolvido em Django com todo carinho 🥰.
+- Projeto é uma API desenvolvida para meu projeto Formativo Backend no SENAI "Roberto Mange";
+- Sua finalidade é realizar o gerenciamento de um sistema escolarç;
+- Foi desenvolvido em Django com todo carinho 🥰.
 
 # Por onde eu começo?
 Primeiramente é necessário ter algumas ferramentas em seu computador.
