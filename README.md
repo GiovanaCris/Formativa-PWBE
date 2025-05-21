@@ -1,7 +1,7 @@
 # Projeto Formativo PWBE 
 
 - Projeto é uma API desenvolvida para meu projeto Formativo Backend no SENAI "Roberto Mange";
-- Sua finalidade é realizar o gerenciamento de um sistema escolarç;
+- Sua finalidade é realizar o gerenciamento de um sistema escolar;
 - Foi desenvolvido em Django com todo carinho 🥰.
 
 # Por onde eu começo?
@@ -57,7 +57,7 @@ DATABASES = {
 ## 🎉 6- Rodando o projeto
 - No terminal faça o comando: python manage.py runserver
 
-# E você pensa que acabou?
+## E você pensa que acabou?
 -   Veja a documentação para aprender ainda mais!
 - Link documentação: [Clique aqui!](https://documenter.getpostman.com/view/43171648/2sB2qZENTN)
 - Agora sim chegamos ao final, parabéns por sua evolução! 🚀
