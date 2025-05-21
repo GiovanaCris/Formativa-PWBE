@@ -57,7 +57,7 @@ DATABASES = {
 ## 🎉 6- Rodando o projeto
 - No terminal faça o comando: python manage.py runserver
 
-## E você pensa que acabou?
+# E você pensa que acabou?
 -   Veja a documentação para aprender ainda mais!
 - Link documentação: [Clique aqui!](https://documenter.getpostman.com/view/43171648/2sB2qZENTN)
 - Agora sim chegamos ao final, parabéns por sua evolução! 🚀
