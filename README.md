@@ -7,7 +7,7 @@ Foi desenvolvido em Django com todo carinho 🥰.
 # Por onde eu começo?
 Primeiramente é necessário ter algumas ferramentas em seu computador.
 ## 🔧 Ferramentas
-- [VSCODE] (https://code.visualstudio.com/download)
+- [VSCODE](https://code.visualstudio.com/download)
 - [Python 3.9+](https://www.python.org/downloads/)
 - [MySQL](https://dev.mysql.com/downloads/windows/installer/8.0.html)
 - API CLIENT [Postman](https://www.postman.com/downloads/)
